@@ -12,8 +12,8 @@ CLASS zcl_bcb_ptax_client DEFINITION
     INTERFACES zif_bcb_ptax_client.
 
     "! Communication Arrangement IDs (devem corresponder ao configurado no SAP BTP)
-    CONSTANTS gc_comm_scenario TYPE string VALUE 'YY1_AUTOMATIC_RATES'.
-    CONSTANTS gc_service_id    TYPE string VALUE 'YY1_ZBCB_PTAX_HTTP_REST'.
+    CONSTANTS gc_comm_scenario TYPE if_com_management=>ty_cscn_id         VALUE 'YY1_AUTOMATIC_RATES'.
+    CONSTANTS gc_service_id    TYPE if_com_management=>ty_cscn_outb_srv_id VALUE 'YY1_ZBCB_PTAX_HTTP_REST'.
 
   PROTECTED SECTION.
   PRIVATE SECTION.

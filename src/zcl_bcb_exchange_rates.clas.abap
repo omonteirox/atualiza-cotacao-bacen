@@ -77,8 +77,8 @@ CLASS zcl_bcb_exchange_rates DEFINITION
     METHODS get_rate_with_fallback
       IMPORTING i_currency       TYPE string
                 i_date           TYPE d
-      RETURNING VALUE(r_result)  TYPE zif_bcb_ptax_client=>ty_bcb_cotacao
-      EXPORTING e_effective_date TYPE d.
+      EXPORTING e_result         TYPE zif_bcb_ptax_client=>ty_bcb_cotacao
+                e_effective_date TYPE d.
 
     "! Calcula o dia útil anterior (ignora sábado e domingo)
     METHODS get_previous_business_day
@@ -135,11 +135,13 @@ CLASS zcl_bcb_exchange_rates IMPLEMENTATION.
                    i_message_v1 = ls_currency-currency ).
 
       " Buscar cotação com fallback para dias anteriores
-      DATA(ls_cotacao) = get_rate_with_fallback(
+      DATA ls_cotacao TYPE zif_bcb_ptax_client=>ty_bcb_cotacao.
+      get_rate_with_fallback(
         EXPORTING
           i_currency       = ls_currency-currency
           i_date           = sy-datum
         IMPORTING
+          e_result         = ls_cotacao
           e_effective_date = lv_effective_date ).
 
       IF ls_cotacao IS NOT INITIAL.
@@ -220,7 +222,7 @@ CLASS zcl_bcb_exchange_rates IMPLEMENTATION.
 
           " Validar cotação selecionada
           IF ls_best IS NOT INITIAL AND mo_rate_validator->validate( ls_best ) = abap_true.
-            r_result = ls_best.
+            e_result = ls_best.
             e_effective_date = lv_current_date.
 
             IF lv_current_date <> i_date.

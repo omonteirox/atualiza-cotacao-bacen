@@ -5,10 +5,12 @@
 "! Testes unitários para as classes de atualização de taxas de câmbio BCB.
 "! Usa test doubles (mocks) para isolamento de dependências HTTP.
 CLASS ztcl_bcb_exchange_rates DEFINITION
+  PUBLIC
   FOR TESTING
   DURATION SHORT
   RISK LEVEL HARMLESS
-  FINAL.
+  FINAL
+  CREATE PUBLIC.
 
   PRIVATE SECTION.
 
