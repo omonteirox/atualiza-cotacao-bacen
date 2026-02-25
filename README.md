@@ -2,7 +2,7 @@
 
 Solução automatizada desenvolvida em ABAP (arquitetura **Clean Core**) para integração e importação diária de taxas de câmbio PTAX do Banco Central do Brasil (BACEN) nas tabelas standard de câmbio do SAP.
 
-Compatível com **SAP BTP ABAP Environment**, **SAP S/4HANA Cloud Public Edition** e **S/4HANA Private Cloud** (com suporte a Communication Scenarios, Application Jobs e chamadas HTTP/S outbound).
+Compatível com **SAP S/4HANA Cloud Public Edition** e **SAP BTP ABAP Environment** (com suporte a Communication Scenarios, Application Jobs e chamadas HTTP/S outbound).
 
 O escopo padrão busca as cotações de **Dólar (USD)** e **Euro (EUR)**, seleciona a melhor cotação de fechamento do dia e persiste automaticamente as taxas (direta e indireta) via `cl_exchange_rates=>put`.
 
