@@ -313,13 +313,13 @@ CLASS zcl_bcb_exchange_rates IMPLEMENTATION.
     log_message( i_type       = 'S'
                  i_message    = 'Taxa direta registrada'
                  i_message_v1 = i_currency
-                 i_message_v2 = gc_base_currency
+                 i_message_v2 = CONV #( gc_base_currency )
                  i_message_v3 = CONV #( i_cotacao-cotacaocompra )
                  i_message_v4 = i_cotacao-tipoboletim ).
 
     log_message( i_type       = 'S'
                  i_message    = 'Taxa indireta registrada'
-                 i_message_v1 = gc_base_currency
+                 i_message_v1 = CONV #( gc_base_currency )
                  i_message_v2 = i_currency
                  i_message_v3 = CONV #( i_cotacao-cotacaocompra )
                  i_message_v4 = i_cotacao-tipoboletim ).
