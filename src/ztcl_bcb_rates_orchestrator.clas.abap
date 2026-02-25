@@ -1,10 +1,10 @@
-"! @testing zcl_bcb_exchange_rates
+"! @testing ZCL_BCB_RATES_ORCHESTRATOR
 "! @testing zcl_bcb_rate_selector
 "! @testing zcl_bcb_rate_validator
 "!
 "! Testes unitários para as classes de atualização de taxas de câmbio BCB.
 "! Usa test doubles (mocks) para isolamento de dependências HTTP.
-CLASS ztcl_bcb_exchange_rates DEFINITION
+CLASS ZTCL_BCB_RATES_ORCHESTRATOR DEFINITION
   PUBLIC
   FOR TESTING
   DURATION SHORT
@@ -20,7 +20,7 @@ CLASS ztcl_bcb_exchange_rates DEFINITION
     METHODS setup.
 
     " ============================================================
-    " TESTES: Formatação de Data (zcl_bcb_exchange_rates)
+    " TESTES: Formatação de Data (ZCL_BCB_RATES_ORCHESTRATOR)
     " ============================================================
 
     "! Data padrão: 24/02/2026 → 02-24-2026
@@ -82,7 +82,7 @@ CLASS ztcl_bcb_exchange_rates DEFINITION
     METHODS test_has_rates_false         FOR TESTING.
 
     " ============================================================
-    " TESTES: Lista de Moedas (zcl_bcb_exchange_rates)
+    " TESTES: Lista de Moedas (ZCL_BCB_RATES_ORCHESTRATOR)
     " ============================================================
 
     "! Lista contém USD e EUR
@@ -107,7 +107,7 @@ ENDCLASS.
 
 
 
-CLASS ztcl_bcb_exchange_rates IMPLEMENTATION.
+CLASS ZTCL_BCB_RATES_ORCHESTRATOR IMPLEMENTATION.
 
   METHOD setup.
     mo_rate_selector  = NEW zcl_bcb_rate_selector( ).
@@ -121,7 +121,7 @@ CLASS ztcl_bcb_exchange_rates IMPLEMENTATION.
 
   METHOD test_format_date_standard.
     cl_abap_unit_assert=>assert_equals(
-      act = zcl_bcb_exchange_rates=>format_date_for_bcb( '20260224' )
+      act = ZCL_BCB_RATES_ORCHESTRATOR=>format_date_for_bcb( '20260224' )
       exp = '02-24-2026'
       msg = 'Formato de data padrão incorreto' ).
   ENDMETHOD.
@@ -129,7 +129,7 @@ CLASS ztcl_bcb_exchange_rates IMPLEMENTATION.
 
   METHOD test_format_date_single_dig.
     cl_abap_unit_assert=>assert_equals(
-      act = zcl_bcb_exchange_rates=>format_date_for_bcb( '20260105' )
+      act = ZCL_BCB_RATES_ORCHESTRATOR=>format_date_for_bcb( '20260105' )
       exp = '01-05-2026'
       msg = 'Formato de data com dígito único incorreto' ).
   ENDMETHOD.
@@ -137,7 +137,7 @@ CLASS ztcl_bcb_exchange_rates IMPLEMENTATION.
 
   METHOD test_format_date_new_year.
     cl_abap_unit_assert=>assert_equals(
-      act = zcl_bcb_exchange_rates=>format_date_for_bcb( '20260101' )
+      act = ZCL_BCB_RATES_ORCHESTRATOR=>format_date_for_bcb( '20260101' )
       exp = '01-01-2026'
       msg = 'Formato de data para ano novo incorreto' ).
   ENDMETHOD.
@@ -145,7 +145,7 @@ CLASS ztcl_bcb_exchange_rates IMPLEMENTATION.
 
   METHOD test_format_date_end_year.
     cl_abap_unit_assert=>assert_equals(
-      act = zcl_bcb_exchange_rates=>format_date_for_bcb( '20251231' )
+      act = ZCL_BCB_RATES_ORCHESTRATOR=>format_date_for_bcb( '20251231' )
       exp = '12-31-2025'
       msg = 'Formato de data para último dia do ano incorreto' ).
   ENDMETHOD.
@@ -399,7 +399,7 @@ CLASS ztcl_bcb_exchange_rates IMPLEMENTATION.
   " ========================================
 
   METHOD test_currency_list_content.
-    DATA(lt_currencies) = zcl_bcb_exchange_rates=>get_currency_list( ).
+    DATA(lt_currencies) = ZCL_BCB_RATES_ORCHESTRATOR=>get_currency_list( ).
 
     DATA(lv_usd_found) = abap_false.
     DATA(lv_eur_found) = abap_false.
@@ -423,7 +423,7 @@ CLASS ztcl_bcb_exchange_rates IMPLEMENTATION.
 
   METHOD test_currency_list_not_empty.
     cl_abap_unit_assert=>assert_not_initial(
-      act = zcl_bcb_exchange_rates=>get_currency_list( )
+      act = ZCL_BCB_RATES_ORCHESTRATOR=>get_currency_list( )
       msg = 'Lista de moedas não deveria estar vazia' ).
   ENDMETHOD.
 

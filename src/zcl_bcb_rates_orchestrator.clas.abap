@@ -8,8 +8,8 @@
 "! - zif_bcb_ptax_client   → comunicação HTTP (injetável/mockável)
 "! - zif_bcb_rate_selector → lógica de seleção de cotação
 "! - zcl_bcb_rate_validator → validação de cotações
-"! - zcl_bcb_exchange_rates → este orquestrador
-CLASS zcl_bcb_exchange_rates DEFINITION
+"! - ZCL_BCB_RATES_ORCHESTRATOR → este orquestrador
+CLASS ZCL_BCB_RATES_ORCHESTRATOR DEFINITION
   PUBLIC
   FINAL
   CREATE PUBLIC.
@@ -103,7 +103,7 @@ ENDCLASS.
 
 
 
-CLASS zcl_bcb_exchange_rates IMPLEMENTATION.
+CLASS ZCL_BCB_RATES_ORCHESTRATOR IMPLEMENTATION.
 
   METHOD constructor.
     " Injeção de dependência: usa instâncias fornecidas ou cria defaults
