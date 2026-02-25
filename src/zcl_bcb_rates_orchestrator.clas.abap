@@ -242,7 +242,7 @@ CLASS ZCL_BCB_RATES_ORCHESTRATOR IMPLEMENTATION.
             RETURN.
           ENDIF.
 
-        CATCH cx_http_dest_provider_error cx_web_http_client_error INTO DATA(lx_exception).
+        CATCH cx_root INTO DATA(lx_exception).
           log_message( i_type       = 'W'
                        i_message    = 'Erro ao buscar cotação'
                        i_message_v1 = i_currency
