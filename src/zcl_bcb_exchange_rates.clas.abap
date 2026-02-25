@@ -154,19 +154,28 @@ CLASS zcl_bcb_exchange_rates IMPLEMENTATION.
       ENDIF.
     ENDLOOP.
 
-    " Gravar as taxas no sistema
+    " Gravar as taxas no sistema (is_update_allowed = abap_true permite re-execução)
     IF mt_exchange_rates IS NOT INITIAL.
-      TRY.
-          DATA(l_result) = cl_exchange_rates=>put( EXPORTING exchange_rates = mt_exchange_rates ).
-          APPEND LINES OF l_result TO mt_messages.
+      DATA(l_result) = cl_exchange_rates=>put(
+        EXPORTING
+          exchange_rates    = mt_exchange_rates
+          is_update_allowed = abap_true ).
+      APPEND LINES OF l_result TO mt_messages.
 
-          log_message( i_type    = 'S'
-                       i_message = 'Taxas gravadas com sucesso no SAP' ).
-        CATCH cx_root INTO DATA(lx_error).
-          log_message( i_type       = 'E'
-                       i_message    = 'Erro ao gravar taxas no SAP'
-                       i_message_v1 = CONV #( lx_error->get_text( ) ) ).
-      ENDTRY.
+      " Verificar se houve erro nas mensagens retornadas
+      DATA(lv_has_error) = abap_false.
+      LOOP AT l_result INTO DATA(ls_result_msg) WHERE type = 'E' OR type = 'A'.
+        lv_has_error = abap_true.
+        EXIT.
+      ENDLOOP.
+
+      IF lv_has_error = abap_false.
+        log_message( i_type    = 'S'
+                     i_message = 'Taxas gravadas com sucesso no SAP' ).
+      ELSE.
+        log_message( i_type    = 'E'
+                     i_message = 'Erro ao gravar taxas no SAP (verificar mensagens)' ).
+      ENDIF.
     ELSE.
       log_message( i_type    = 'W'
                    i_message = 'Nenhuma taxa de câmbio para gravar' ).
@@ -231,7 +240,7 @@ CLASS zcl_bcb_exchange_rates IMPLEMENTATION.
             RETURN.
           ENDIF.
 
-        CATCH cx_root INTO DATA(lx_exception).
+        CATCH cx_http_dest_provider_error cx_web_http_client_error INTO DATA(lx_exception).
           log_message( i_type       = 'W'
                        i_message    = 'Erro ao buscar cotação'
                        i_message_v1 = i_currency
@@ -251,7 +260,7 @@ CLASS zcl_bcb_exchange_rates IMPLEMENTATION.
     " Pular fins de semana
     " ABAP: segunda=1 ... domingo=7 (pode variar conforme calendário do sistema)
     " Abordagem robusta: verificar se caiu em sábado ou domingo
-    DATA(lv_day_name) = CONV string( '' ).
+
 
     " Calcular dia da semana usando aritmética modular
     " 01.01.0001 foi uma segunda-feira no calendário ABAP

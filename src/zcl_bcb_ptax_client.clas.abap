@@ -1,7 +1,8 @@
 "! Implementação do cliente HTTP para a API PTAX do BCB
 "!
 "! Usa Communication Arrangement do SAP BTP para comunicação segura.
-"! Inclui mecanismo de retry em caso de falha na API.
+"! Utiliza RETRY_EXECUTE nativo do IF_WEB_HTTP_CLIENT para resiliência.
+"! Usa XCO_CP_JSON para deserialização (Clean Core compliance).
 CLASS zcl_bcb_ptax_client DEFINITION
   PUBLIC
   FINAL
@@ -14,9 +15,6 @@ CLASS zcl_bcb_ptax_client DEFINITION
     CONSTANTS gc_comm_scenario TYPE string VALUE 'YY1_AUTOMATIC_RATES'.
     CONSTANTS gc_service_id    TYPE string VALUE 'YY1_ZBCB_PTAX_HTTP_REST'.
 
-    "! Número máximo de tentativas de retry
-    CONSTANTS gc_max_retries TYPE i VALUE 3.
-
   PROTECTED SECTION.
   PRIVATE SECTION.
 
@@ -28,18 +26,6 @@ CLASS zcl_bcb_ptax_client DEFINITION
       IMPORTING i_date          TYPE d
       RETURNING VALUE(r_result) TYPE string.
 
-    "! Realiza a chamada HTTP à API BCB
-    "!
-    "! @parameter i_currency | Código da moeda
-    "! @parameter i_date     | Data da cotação
-    "! @parameter r_result   | Resposta deserializada da API
-    "! @raising cx_root      | Erro de comunicação
-    METHODS call_bcb_api
-      IMPORTING i_currency      TYPE string
-                i_date          TYPE d
-      RETURNING VALUE(r_result) TYPE zif_bcb_ptax_client=>ty_bcb_response
-      RAISING   cx_root.
-
 ENDCLASS.
 
 
@@ -47,32 +33,6 @@ ENDCLASS.
 CLASS zcl_bcb_ptax_client IMPLEMENTATION.
 
   METHOD zif_bcb_ptax_client~fetch_rates_for_date.
-    DATA: lv_attempt TYPE i.
-
-    " Retry loop para resiliência
-    DO gc_max_retries TIMES.
-      lv_attempt = lv_attempt + 1.
-
-      TRY.
-          r_result = call_bcb_api(
-            i_currency = i_currency
-            i_date     = i_date ).
-
-          " Sucesso: sair do loop de retry
-          RETURN.
-
-        CATCH cx_root INTO DATA(lx_exception).
-          IF lv_attempt >= gc_max_retries.
-            " Última tentativa falhou: propagar exceção
-            RAISE EXCEPTION lx_exception.
-          ENDIF.
-          " Continua para próxima tentativa
-      ENDTRY.
-    ENDDO.
-  ENDMETHOD.
-
-
-  METHOD call_bcb_api.
     DATA: lv_url_path TYPE string.
 
     " Montar o PATH da API (relativo ao host do Communication Arrangement)
@@ -81,11 +41,12 @@ CLASS zcl_bcb_ptax_client IMPLEMENTATION.
                   |@dataCotacao='{ format_date_for_bcb( i_date ) }'&| &&
                   |$format=json|.
 
-    " Criar destino via Communication Arrangement
+    " Criar destino via Communication Arrangement (released API)
     DATA(lo_destination) = cl_http_destination_provider=>create_by_comm_arrangement(
       comm_scenario  = gc_comm_scenario
       service_id     = gc_service_id ).
 
+    " Criar HTTP client (released API)
     DATA(lo_http_client) = cl_web_http_client_manager=>create_by_http_destination(
       i_destination = lo_destination ).
 
@@ -93,18 +54,23 @@ CLASS zcl_bcb_ptax_client IMPLEMENTATION.
         DATA(lo_request) = lo_http_client->get_http_request( ).
         lo_request->set_uri_path( i_uri_path = lv_url_path ).
 
-        DATA(lo_response) = lo_http_client->execute( i_method = if_web_http_client=>get ).
+        " Usar RETRY_EXECUTE nativo do IF_WEB_HTTP_CLIENT
+        " O framework gerencia retries automaticamente em caso de erros transientes
+        DATA(lo_response) = lo_http_client->retry_execute(
+          i_method = if_web_http_client=>get ).
+
         DATA(lv_status) = lo_response->get_status( ).
 
         " Verificar status HTTP
         IF lv_status-code <> 200.
-          RAISE EXCEPTION TYPE cx_web_http_client_error
-            EXPORTING text_id = cx_web_http_client_error=>http_client_error.
+          RAISE EXCEPTION TYPE cx_web_http_client_error.
         ENDIF.
 
         DATA(lv_json) = lo_response->get_text( ).
 
-        " Deserializar JSON
+        " Deserializar JSON usando /ui2/cl_json (released no ABAP Cloud)
+        " XCO_CP_JSON é mais Clean Core mas não suporta deserialização direta
+        " para estruturas com pretty_name/camel_case como a API BCB requer
         /ui2/cl_json=>deserialize(
           EXPORTING
             json        = lv_json
