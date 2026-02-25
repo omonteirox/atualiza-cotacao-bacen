@@ -12,10 +12,10 @@ O escopo padrão do projeto realiza a busca das moedas **Dólar (USD)** e **Euro
 
 O desenvolvimento foi estruturado seguindo as boas práticas do Clean Code, adotando a separação de responsabilidades em componentes coesos e desacoplados:
 
-*   **`zcl_bcb_ptax_client` (Cliente de Comunicação HTTP):** Responsável exclusivamente pela orquestração da requisição HTTP(S) no formato OData para a API pública do Banco Central do Brasil.
-*   **`zcl_bcb_rate_selector` (Seletor de Cotações):** A API do BACEN disponibiliza múltiplos boletins intradiários. Esta classe isola a regra de negócio para selecionar a cotação apropriada para contabilização (tipicamente, o último boletim oficial do dia).
-*   **`zcl_bcb_rate_validator` (Validador de Integridade):** Assegura a consistência e a validade dos dados em trânsito. Evita, por exemplo, a gravação de taxas nulas, formatadas incorretamente ou zeradas nos registros financeiros do SAP.
-*   **`zcl_bcb_exchange_rates` (Orquestrador / Controller):** É o componente principal que invoca todos os outros em sequência lógica. Ele implementa as interfaces standard da SAP voltadas ao processamento em background (Jobs) e integração via console:
+*   **`zcl_bcb_ptax_api_client` (Cliente de Comunicação HTTP):** Responsável exclusivamente pela orquestração da requisição HTTP(S) no formato OData para a API pública do Banco Central do Brasil.
+*   **`zcl_bcb_rates_selector` (Seletor de Cotações):** A API do BACEN disponibiliza múltiplos boletins intradiários. Esta classe isola a regra de negócio para selecionar a cotação apropriada para contabilização (tipicamente, o último boletim oficial do dia).
+*   **`zcl_bcb_rates_validator` (Validador de Integridade):** Assegura a consistência e a validade dos dados em trânsito. Evita, por exemplo, a gravação de taxas nulas, formatadas incorretamente ou zeradas nos registros financeiros do SAP.
+*   **`zcl_bcb_rates_orchestrator` (Orquestrador / Controller):** É o componente principal que invoca todos os outros em sequência lógica. Ele implementa as interfaces standard da SAP voltadas ao processamento em background (Jobs) e integração via console:
     *   `IF_APJ_RT_EXEC_OBJECT` e `IF_APJ_DT_EXEC_OBJECT`: Interfaces que capacitam a classe para ser executada e agendada pelos aplicativos do Fiori (Application Jobs).
     *   `IF_OO_ADT_CLASSRUN`: Interface que permite ao desenvolvedor invocar e debugar a execução diretamente no painel de console do Eclipse (ADT - ABAP Development Tools).
     *   Possui a responsabilidade final de instanciar a classe standard (como a `cl_exchange_rates`) e comandar a inserção no banco de dados da SAP.
@@ -50,7 +50,7 @@ Se você for um desenvolvedor, realize essa etapa de preparação antes da entre
 1.  No Eclipse (ADT), na árvore Project Explorer, clique com o botão direito no Pacote ABAP criado para o projeto e vá em **New > Other ABAP Repository Object**.
 2.  Busque por **Application Job Catalog Entry**.
 3.  Defina um Nome (ex: `Z_JC_BCB_RATES`) e uma descrição.
-4.  No campo de conteúdo principal **Class Name**, referencie a classe orquestradora: `ZCL_BCB_EXCHANGE_RATES`.
+4.  No campo de conteúdo principal **Class Name**, referencie a classe orquestradora: `ZCL_BCB_RATES_ORCHESTRATOR`.
 5.  Salve, associe-o a uma Transport Request e **Ative** o objeto (`Ctrl+F3`).
 6.  Clique com o botão direito novamente ou pressione `Ctrl+N` para procurar e criar o segundo requisito, um **Application Job Template**.
 7.  Dê-lhe o nome de (ex: `Z_JT_BCB_RATES`).
@@ -79,6 +79,6 @@ Assim, aos finais da tarde, o SAP será abastecido automaticamente com a taxa at
 
 O projeto permite o acionamento em Sandbox ou por vontade puramente de validação unitária sem comprometer filas de Jobs programados:
 
-1. Abra a classe central `zcl_bcb_exchange_rates` na sua sessão particular do Eclipse ADT.
+1. Abra a classe central `zcl_bcb_rates_orchestrator` na sua sessão particular do Eclipse ADT.
 2. Com o mouse posicionado sobre o código livre em tela, pressione `F9` (**Run as ABAP Application Console**).
 3. O painel inferior do seu ambiente exibirá instantaneamente as impressões (Outlays) de requisição, conversões de dias, sucessos (Check mark) e o registro validado dos valores do banco de dados relacional.

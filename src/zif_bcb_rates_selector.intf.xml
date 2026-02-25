@@ -3,7 +3,7 @@
     <asx:abap xmlns:asx="http://www.sap.com/abapxml" version="1.0">
         <asx:values>
             <VSEOINTERF>
-                <CLSNAME>ZIF_BCB_RATE_SELECTOR</CLSNAME>
+                <CLSNAME>ZIF_BCB_RATES_SELECTOR</CLSNAME>
                 <LANGU>E</LANGU>
                 <DESCRIPT>Interface for BCB Rate Selection Strategy</DESCRIPT>
                 <EXPOSURE>2</EXPOSURE>

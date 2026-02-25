@@ -1,6 +1,6 @@
 "! @testing ZCL_BCB_RATES_ORCHESTRATOR
-"! @testing zcl_bcb_rate_selector
-"! @testing zcl_bcb_rate_validator
+"! @testing zcl_bcb_rates_selector
+"! @testing zcl_bcb_rates_validator
 "!
 "! Testes unitários para as classes de atualização de taxas de câmbio BCB.
 "! Usa test doubles (mocks) para isolamento de dependências HTTP.
@@ -33,7 +33,7 @@ CLASS ZTCL_BCB_RATES_ORCHESTRATOR DEFINITION
     METHODS test_format_date_end_year    FOR TESTING.
 
     " ============================================================
-    " TESTES: Seleção de Melhor Cotação (zcl_bcb_rate_selector)
+    " TESTES: Seleção de Melhor Cotação (zcl_bcb_rates_selector)
     " ============================================================
 
     "! Somente Fechamento: deve retornar Fechamento
@@ -50,7 +50,7 @@ CLASS ZTCL_BCB_RATES_ORCHESTRATOR DEFINITION
     METHODS test_select_multi_interm     FOR TESTING.
 
     " ============================================================
-    " TESTES: Prioridade de Boletim (zcl_bcb_rate_selector)
+    " TESTES: Prioridade de Boletim (zcl_bcb_rates_selector)
     " ============================================================
 
     "! Prioridade do Fechamento PTAX = 1
@@ -63,7 +63,7 @@ CLASS ZTCL_BCB_RATES_ORCHESTRATOR DEFINITION
     METHODS test_priority_unknown        FOR TESTING.
 
     " ============================================================
-    " TESTES: Validação de Cotação (zcl_bcb_rate_validator)
+    " TESTES: Validação de Cotação (zcl_bcb_rates_validator)
     " ============================================================
 
     "! Cotação com valores positivos → válida
@@ -93,8 +93,8 @@ CLASS ZTCL_BCB_RATES_ORCHESTRATOR DEFINITION
     "! ============================================================
     "! Instâncias para teste
     "! ============================================================
-    DATA mo_rate_selector  TYPE REF TO zcl_bcb_rate_selector.
-    DATA mo_rate_validator TYPE REF TO zcl_bcb_rate_validator.
+    DATA mo_rate_selector  TYPE REF TO zcl_bcb_rates_selector.
+    DATA mo_rate_validator TYPE REF TO zcl_bcb_rates_validator.
 
     "! Helper: cria uma cotação de teste
     METHODS create_test_cotacao
@@ -102,7 +102,7 @@ CLASS ZTCL_BCB_RATES_ORCHESTRATOR DEFINITION
                 i_venda         TYPE p
                 i_tipo          TYPE string
                 i_datahora      TYPE string DEFAULT '2026-02-24 10:00:00.000'
-      RETURNING VALUE(r_result) TYPE zif_bcb_ptax_client=>ty_bcb_cotacao.
+      RETURNING VALUE(r_result) TYPE zif_bcb_ptax_api_client=>ty_bcb_cotacao.
 ENDCLASS.
 
 
@@ -110,8 +110,8 @@ ENDCLASS.
 CLASS ZTCL_BCB_RATES_ORCHESTRATOR IMPLEMENTATION.
 
   METHOD setup.
-    mo_rate_selector  = NEW zcl_bcb_rate_selector( ).
-    mo_rate_validator = NEW zcl_bcb_rate_validator( ).
+    mo_rate_selector  = NEW zcl_bcb_rates_selector( ).
+    mo_rate_validator = NEW zcl_bcb_rates_validator( ).
   ENDMETHOD.
 
 
@@ -156,13 +156,13 @@ CLASS ZTCL_BCB_RATES_ORCHESTRATOR IMPLEMENTATION.
   " ========================================
 
   METHOD test_select_fechamento_only.
-    DATA(lt_cotacoes) = VALUE zif_bcb_ptax_client=>ty_bcb_cotacoes(
+    DATA(lt_cotacoes) = VALUE zif_bcb_ptax_api_client=>ty_bcb_cotacoes(
       ( create_test_cotacao( i_compra = '5.17630' i_venda = '5.17690'
                              i_tipo = 'Fechamento PTAX'
                              i_datahora = '2026-02-24 13:04:29.018' ) )
     ).
 
-    DATA(ls_result) = mo_rate_selector->zif_bcb_rate_selector~select_best_rate( lt_cotacoes ).
+    DATA(ls_result) = mo_rate_selector->zif_bcb_rates_selector~select_best_rate( lt_cotacoes ).
 
     cl_abap_unit_assert=>assert_equals(
       act = ls_result-tipoboletim
@@ -172,7 +172,7 @@ CLASS ZTCL_BCB_RATES_ORCHESTRATOR IMPLEMENTATION.
 
 
   METHOD test_select_all_boletins.
-    DATA(lt_cotacoes) = VALUE zif_bcb_ptax_client=>ty_bcb_cotacoes(
+    DATA(lt_cotacoes) = VALUE zif_bcb_ptax_api_client=>ty_bcb_cotacoes(
       ( create_test_cotacao( i_compra = '5.10000' i_venda = '5.10060'
                              i_tipo = 'Abertura'
                              i_datahora = '2026-02-24 10:11:24.971' ) )
@@ -190,7 +190,7 @@ CLASS ZTCL_BCB_RATES_ORCHESTRATOR IMPLEMENTATION.
                              i_datahora = '2026-02-24 13:04:29.024' ) )
     ).
 
-    DATA(ls_result) = mo_rate_selector->zif_bcb_rate_selector~select_best_rate( lt_cotacoes ).
+    DATA(ls_result) = mo_rate_selector->zif_bcb_rates_selector~select_best_rate( lt_cotacoes ).
 
     cl_abap_unit_assert=>assert_equals(
       act = ls_result-tipoboletim
@@ -205,7 +205,7 @@ CLASS ZTCL_BCB_RATES_ORCHESTRATOR IMPLEMENTATION.
 
 
   METHOD test_select_intermediarios.
-    DATA(lt_cotacoes) = VALUE zif_bcb_ptax_client=>ty_bcb_cotacoes(
+    DATA(lt_cotacoes) = VALUE zif_bcb_ptax_api_client=>ty_bcb_cotacoes(
       ( create_test_cotacao( i_compra = '5.12000' i_venda = '5.12060'
                              i_tipo = 'Intermediário'
                              i_datahora = '2026-02-24 11:09:24.763' ) )
@@ -217,7 +217,7 @@ CLASS ZTCL_BCB_RATES_ORCHESTRATOR IMPLEMENTATION.
                              i_datahora = '2026-02-24 13:04:29.018' ) )
     ).
 
-    DATA(ls_result) = mo_rate_selector->zif_bcb_rate_selector~select_best_rate( lt_cotacoes ).
+    DATA(ls_result) = mo_rate_selector->zif_bcb_rates_selector~select_best_rate( lt_cotacoes ).
 
     cl_abap_unit_assert=>assert_equals(
       act = ls_result-cotacaocompra
@@ -227,13 +227,13 @@ CLASS ZTCL_BCB_RATES_ORCHESTRATOR IMPLEMENTATION.
 
 
   METHOD test_select_abertura_only.
-    DATA(lt_cotacoes) = VALUE zif_bcb_ptax_client=>ty_bcb_cotacoes(
+    DATA(lt_cotacoes) = VALUE zif_bcb_ptax_api_client=>ty_bcb_cotacoes(
       ( create_test_cotacao( i_compra = '5.10000' i_venda = '5.10060'
                              i_tipo = 'Abertura'
                              i_datahora = '2026-02-24 10:11:24.971' ) )
     ).
 
-    DATA(ls_result) = mo_rate_selector->zif_bcb_rate_selector~select_best_rate( lt_cotacoes ).
+    DATA(ls_result) = mo_rate_selector->zif_bcb_rates_selector~select_best_rate( lt_cotacoes ).
 
     cl_abap_unit_assert=>assert_equals(
       act = ls_result-tipoboletim
@@ -243,9 +243,9 @@ CLASS ZTCL_BCB_RATES_ORCHESTRATOR IMPLEMENTATION.
 
 
   METHOD test_select_empty_list.
-    DATA(lt_cotacoes) = VALUE zif_bcb_ptax_client=>ty_bcb_cotacoes( ).
+    DATA(lt_cotacoes) = VALUE zif_bcb_ptax_api_client=>ty_bcb_cotacoes( ).
 
-    DATA(ls_result) = mo_rate_selector->zif_bcb_rate_selector~select_best_rate( lt_cotacoes ).
+    DATA(ls_result) = mo_rate_selector->zif_bcb_rates_selector~select_best_rate( lt_cotacoes ).
 
     cl_abap_unit_assert=>assert_initial(
       act = ls_result
@@ -254,7 +254,7 @@ CLASS ZTCL_BCB_RATES_ORCHESTRATOR IMPLEMENTATION.
 
 
   METHOD test_select_multi_interm.
-    DATA(lt_cotacoes) = VALUE zif_bcb_ptax_client=>ty_bcb_cotacoes(
+    DATA(lt_cotacoes) = VALUE zif_bcb_ptax_api_client=>ty_bcb_cotacoes(
       ( create_test_cotacao( i_compra = '5.10000' i_venda = '5.10060'
                              i_tipo = 'Abertura'
                              i_datahora = '2026-02-24 10:11:24.971' ) )
@@ -266,7 +266,7 @@ CLASS ZTCL_BCB_RATES_ORCHESTRATOR IMPLEMENTATION.
                              i_datahora = '2026-02-24 12:03:25.131' ) )
     ).
 
-    DATA(ls_result) = mo_rate_selector->zif_bcb_rate_selector~select_best_rate( lt_cotacoes ).
+    DATA(ls_result) = mo_rate_selector->zif_bcb_rates_selector~select_best_rate( lt_cotacoes ).
 
     cl_abap_unit_assert=>assert_equals(
       act = ls_result-cotacaocompra
@@ -371,7 +371,7 @@ CLASS ZTCL_BCB_RATES_ORCHESTRATOR IMPLEMENTATION.
 
 
   METHOD test_has_rates_true.
-    DATA(ls_response) = VALUE zif_bcb_ptax_client=>ty_bcb_response(
+    DATA(ls_response) = VALUE zif_bcb_ptax_api_client=>ty_bcb_response(
       value = VALUE #(
         ( create_test_cotacao( i_compra = '5.17630' i_venda = '5.17690' i_tipo = 'Abertura' ) )
       )
@@ -385,7 +385,7 @@ CLASS ZTCL_BCB_RATES_ORCHESTRATOR IMPLEMENTATION.
 
 
   METHOD test_has_rates_false.
-    DATA(ls_response) = VALUE zif_bcb_ptax_client=>ty_bcb_response( ).
+    DATA(ls_response) = VALUE zif_bcb_ptax_api_client=>ty_bcb_response( ).
 
     cl_abap_unit_assert=>assert_equals(
       act = mo_rate_validator->has_rates( ls_response )
@@ -433,7 +433,7 @@ CLASS ZTCL_BCB_RATES_ORCHESTRATOR IMPLEMENTATION.
   " ========================================
 
   METHOD create_test_cotacao.
-    r_result = VALUE zif_bcb_ptax_client=>ty_bcb_cotacao(
+    r_result = VALUE zif_bcb_ptax_api_client=>ty_bcb_cotacao(
       paridadecompra  = 1
       paridadevenda   = 1
       cotacaocompra   = i_compra

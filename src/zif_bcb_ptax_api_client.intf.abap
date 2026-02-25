@@ -2,7 +2,7 @@
 "!
 "! Permite injeção de dependência e mock nos testes unitários.
 "! Implementação real usa Communication Arrangement do SAP BTP.
-INTERFACE zif_bcb_ptax_client
+INTERFACE zif_bcb_ptax_api_client
   PUBLIC.
 
   " Estrutura para deserialização do JSON da API BCB

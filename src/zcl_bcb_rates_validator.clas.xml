@@ -3,7 +3,7 @@
     <asx:abap xmlns:asx="http://www.sap.com/abapxml" version="1.0">
         <asx:values>
             <VSEOCLASS>
-                <CLSNAME>ZCL_BCB_RATE_VALIDATOR</CLSNAME>
+                <CLSNAME>ZCL_BCB_RATES_VALIDATOR</CLSNAME>
                 <LANGU>E</LANGU>
                 <DESCRIPT>BCB Exchange Rate Validator</DESCRIPT>
                 <STATE>1</STATE>

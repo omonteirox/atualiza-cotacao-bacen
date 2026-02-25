@@ -2,7 +2,7 @@
 "!
 "! Define o contrato para seleção da melhor cotação entre os boletins
 "! disponíveis (Abertura, Intermediário, Fechamento PTAX).
-INTERFACE zif_bcb_rate_selector
+INTERFACE zif_bcb_rates_selector
   PUBLIC.
 
   "! Seleciona a melhor cotação da lista retornada pela API
@@ -12,7 +12,7 @@ INTERFACE zif_bcb_rate_selector
   "! @parameter i_cotacoes | Lista de cotações retornadas pela API BCB
   "! @parameter r_result   | Melhor cotação selecionada
   METHODS select_best_rate
-    IMPORTING i_cotacoes      TYPE zif_bcb_ptax_client=>ty_bcb_cotacoes
-    RETURNING VALUE(r_result) TYPE zif_bcb_ptax_client=>ty_bcb_cotacao.
+    IMPORTING i_cotacoes      TYPE zif_bcb_ptax_api_client=>ty_bcb_cotacoes
+    RETURNING VALUE(r_result) TYPE zif_bcb_ptax_api_client=>ty_bcb_cotacao.
 
 ENDINTERFACE.

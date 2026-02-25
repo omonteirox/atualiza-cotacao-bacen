@@ -2,13 +2,13 @@
 "!
 "! Seleciona a cotação mais relevante entre os boletins disponíveis.
 "! Prioridade: Fechamento PTAX > Intermediário (mais recente) > Abertura.
-CLASS zcl_bcb_rate_selector DEFINITION
+CLASS zcl_bcb_rates_selector DEFINITION
   PUBLIC
   FINAL
   CREATE PUBLIC.
 
   PUBLIC SECTION.
-    INTERFACES zif_bcb_rate_selector.
+    INTERFACES zif_bcb_rates_selector.
 
     " Prioridade dos boletins (menor = maior prioridade)
     CONSTANTS:
@@ -39,9 +39,9 @@ ENDCLASS.
 
 
 
-CLASS zcl_bcb_rate_selector IMPLEMENTATION.
+CLASS zcl_bcb_rates_selector IMPLEMENTATION.
 
-  METHOD zif_bcb_rate_selector~select_best_rate.
+  METHOD zif_bcb_rates_selector~select_best_rate.
     DATA: lv_best_priority TYPE i VALUE 99,
           lv_best_index    TYPE i VALUE 0,
           lv_priority      TYPE i,

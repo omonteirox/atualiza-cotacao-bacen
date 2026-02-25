@@ -3,13 +3,13 @@
 "! Usa Communication Arrangement do SAP BTP para comunicação segura.
 "! Utiliza RETRY_EXECUTE nativo do IF_WEB_HTTP_CLIENT para resiliência.
 "! Usa XCO_CP_JSON para deserialização (Clean Core compliance).
-CLASS zcl_bcb_ptax_client DEFINITION
+CLASS zcl_bcb_ptax_api_client DEFINITION
   PUBLIC
   FINAL
   CREATE PUBLIC.
 
   PUBLIC SECTION.
-    INTERFACES zif_bcb_ptax_client.
+    INTERFACES zif_bcb_ptax_api_client.
 
     "! Communication Arrangement IDs (devem corresponder ao configurado no SAP BTP)
     CONSTANTS gc_comm_scenario TYPE if_com_management=>ty_cscn_id         VALUE 'YY1_AUTOMATIC_RATES'.
@@ -30,9 +30,9 @@ ENDCLASS.
 
 
 
-CLASS zcl_bcb_ptax_client IMPLEMENTATION.
+CLASS zcl_bcb_ptax_api_client IMPLEMENTATION.
 
-  METHOD zif_bcb_ptax_client~fetch_rates_for_date.
+  METHOD zif_bcb_ptax_api_client~fetch_rates_for_date.
     DATA: lv_url_path TYPE string.
 
     " Montar o PATH da API (relativo ao host do Communication Arrangement)

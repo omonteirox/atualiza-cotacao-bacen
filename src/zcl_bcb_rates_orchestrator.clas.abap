@@ -5,9 +5,9 @@
 "! e Console (ADT Classrun) do SAP BTP.
 "!
 "! Arquitetura Clean Core:
-"! - zif_bcb_ptax_client   → comunicação HTTP (injetável/mockável)
-"! - zif_bcb_rate_selector → lógica de seleção de cotação
-"! - zcl_bcb_rate_validator → validação de cotações
+"! - zif_bcb_ptax_api_client   → comunicação HTTP (injetável/mockável)
+"! - zif_bcb_rates_selector → lógica de seleção de cotação
+"! - zcl_bcb_rates_validator → validação de cotações
 "! - ZCL_BCB_RATES_ORCHESTRATOR → este orquestrador
 CLASS ZCL_BCB_RATES_ORCHESTRATOR DEFINITION
   PUBLIC
@@ -31,9 +31,9 @@ CLASS ZCL_BCB_RATES_ORCHESTRATOR DEFINITION
     "! @parameter i_rate_selector  | Seletor de cotação (opcional, usa default se não informado)
     "! @parameter i_rate_validator | Validador de cotação (opcional, usa default se não informado)
     METHODS constructor
-      IMPORTING i_ptax_client    TYPE REF TO zif_bcb_ptax_client   OPTIONAL
-                i_rate_selector  TYPE REF TO zif_bcb_rate_selector OPTIONAL
-                i_rate_validator TYPE REF TO zcl_bcb_rate_validator OPTIONAL.
+      IMPORTING i_ptax_client    TYPE REF TO zif_bcb_ptax_api_client   OPTIONAL
+                i_rate_selector  TYPE REF TO zif_bcb_rates_selector OPTIONAL
+                i_rate_validator TYPE REF TO zcl_bcb_rates_validator OPTIONAL.
 
     "! Método principal de execução
     METHODS execute_rates_update.
@@ -65,9 +65,9 @@ CLASS ZCL_BCB_RATES_ORCHESTRATOR DEFINITION
     CONSTANTS gc_factor TYPE i VALUE 1.
 
     "! Dependências injetáveis
-    DATA mo_ptax_client    TYPE REF TO zif_bcb_ptax_client.
-    DATA mo_rate_selector  TYPE REF TO zif_bcb_rate_selector.
-    DATA mo_rate_validator TYPE REF TO zcl_bcb_rate_validator.
+    DATA mo_ptax_client    TYPE REF TO zif_bcb_ptax_api_client.
+    DATA mo_rate_selector  TYPE REF TO zif_bcb_rates_selector.
+    DATA mo_rate_validator TYPE REF TO zcl_bcb_rates_validator.
 
     "! Dados recuperados para exibição no console e log
     DATA mt_exchange_rates TYPE cl_exchange_rates=>ty_exchange_rates.
@@ -77,7 +77,7 @@ CLASS ZCL_BCB_RATES_ORCHESTRATOR DEFINITION
     METHODS get_rate_with_fallback
       IMPORTING i_currency       TYPE string
                 i_date           TYPE d
-      EXPORTING e_result         TYPE zif_bcb_ptax_client=>ty_bcb_cotacao
+      EXPORTING e_result         TYPE zif_bcb_ptax_api_client=>ty_bcb_cotacao
                 e_effective_date TYPE d.
 
     "! Calcula o dia útil anterior (ignora sábado e domingo)
@@ -88,7 +88,7 @@ CLASS ZCL_BCB_RATES_ORCHESTRATOR DEFINITION
     "! Processa e armazena as taxas de câmbio (direta e indireta)
     METHODS process_and_store_rates
       IMPORTING i_currency TYPE string
-                i_cotacao  TYPE zif_bcb_ptax_client=>ty_bcb_cotacao
+                i_cotacao  TYPE zif_bcb_ptax_api_client=>ty_bcb_cotacao
                 i_date     TYPE d.
 
     "! Registra mensagem no log
@@ -108,11 +108,11 @@ CLASS ZCL_BCB_RATES_ORCHESTRATOR IMPLEMENTATION.
   METHOD constructor.
     " Injeção de dependência: usa instâncias fornecidas ou cria defaults
     mo_ptax_client    = COND #( WHEN i_ptax_client    IS BOUND THEN i_ptax_client
-                                ELSE NEW zcl_bcb_ptax_client( ) ).
+                                ELSE NEW zcl_bcb_ptax_api_client( ) ).
     mo_rate_selector  = COND #( WHEN i_rate_selector  IS BOUND THEN i_rate_selector
-                                ELSE NEW zcl_bcb_rate_selector( ) ).
+                                ELSE NEW zcl_bcb_rates_selector( ) ).
     mo_rate_validator = COND #( WHEN i_rate_validator IS BOUND THEN i_rate_validator
-                                ELSE NEW zcl_bcb_rate_validator( ) ).
+                                ELSE NEW zcl_bcb_rates_validator( ) ).
   ENDMETHOD.
 
 
@@ -135,7 +135,7 @@ CLASS ZCL_BCB_RATES_ORCHESTRATOR IMPLEMENTATION.
                    i_message_v1 = ls_currency-currency ).
 
       " Buscar cotação com fallback para dias anteriores
-      DATA ls_cotacao TYPE zif_bcb_ptax_client=>ty_bcb_cotacao.
+      DATA ls_cotacao TYPE zif_bcb_ptax_api_client=>ty_bcb_cotacao.
       get_rate_with_fallback(
         EXPORTING
           i_currency       = ls_currency-currency
