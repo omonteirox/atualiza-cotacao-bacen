@@ -14,14 +14,14 @@ CLASS ztcl_bcb_exchange_rates DEFINITION
 
   PRIVATE SECTION.
 
-    "! ============================================================
-    "! SETUP
-    "! ============================================================
+    " ============================================================
+    " SETUP
+    " ============================================================
     METHODS setup.
 
-    "! ============================================================
-    "! TESTES: Formatação de Data (zcl_bcb_exchange_rates)
-    "! ============================================================
+    " ============================================================
+    " TESTES: Formatação de Data (zcl_bcb_exchange_rates)
+    " ============================================================
 
     "! Data padrão: 24/02/2026 → 02-24-2026
     METHODS test_format_date_standard    FOR TESTING.
@@ -32,9 +32,9 @@ CLASS ztcl_bcb_exchange_rates DEFINITION
     "! Último dia do ano: 31/12/2025 → 12-31-2025
     METHODS test_format_date_end_year    FOR TESTING.
 
-    "! ============================================================
-    "! TESTES: Seleção de Melhor Cotação (zcl_bcb_rate_selector)
-    "! ============================================================
+    " ============================================================
+    " TESTES: Seleção de Melhor Cotação (zcl_bcb_rate_selector)
+    " ============================================================
 
     "! Somente Fechamento: deve retornar Fechamento
     METHODS test_select_fechamento_only  FOR TESTING.
@@ -49,9 +49,9 @@ CLASS ztcl_bcb_exchange_rates DEFINITION
     "! Abertura + múltiplos intermediários: pega último intermediário
     METHODS test_select_multi_interm     FOR TESTING.
 
-    "! ============================================================
-    "! TESTES: Prioridade de Boletim (zcl_bcb_rate_selector)
-    "! ============================================================
+    " ============================================================
+    " TESTES: Prioridade de Boletim (zcl_bcb_rate_selector)
+    " ============================================================
 
     "! Prioridade do Fechamento PTAX = 1
     METHODS test_priority_fechamento     FOR TESTING.
@@ -62,9 +62,9 @@ CLASS ztcl_bcb_exchange_rates DEFINITION
     "! Prioridade de tipo desconhecido = 99
     METHODS test_priority_unknown        FOR TESTING.
 
-    "! ============================================================
-    "! TESTES: Validação de Cotação (zcl_bcb_rate_validator)
-    "! ============================================================
+    " ============================================================
+    " TESTES: Validação de Cotação (zcl_bcb_rate_validator)
+    " ============================================================
 
     "! Cotação com valores positivos → válida
     METHODS test_validate_rate_valid     FOR TESTING.
@@ -81,9 +81,9 @@ CLASS ztcl_bcb_exchange_rates DEFINITION
     "! Response vazio → has_rates = false
     METHODS test_has_rates_false         FOR TESTING.
 
-    "! ============================================================
-    "! TESTES: Lista de Moedas (zcl_bcb_exchange_rates)
-    "! ============================================================
+    " ============================================================
+    " TESTES: Lista de Moedas (zcl_bcb_exchange_rates)
+    " ============================================================
 
     "! Lista contém USD e EUR
     METHODS test_currency_list_content   FOR TESTING.

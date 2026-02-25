@@ -5,7 +5,7 @@
 INTERFACE zif_bcb_ptax_client
   PUBLIC.
 
-  "! Estrutura para deserialização do JSON da API BCB
+  " Estrutura para deserialização do JSON da API BCB
   TYPES: BEGIN OF ty_bcb_cotacao,
            paridadecompra  TYPE p LENGTH 10 DECIMALS 5,
            paridadevenda   TYPE p LENGTH 10 DECIMALS 5,
@@ -16,7 +16,7 @@ INTERFACE zif_bcb_ptax_client
          END OF ty_bcb_cotacao,
          ty_bcb_cotacoes TYPE STANDARD TABLE OF ty_bcb_cotacao WITH EMPTY KEY.
 
-  "! Estrutura do response OData
+  " Estrutura do response OData
   TYPES: BEGIN OF ty_bcb_response,
            value TYPE ty_bcb_cotacoes,
          END OF ty_bcb_response.

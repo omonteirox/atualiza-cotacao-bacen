@@ -10,7 +10,7 @@ CLASS zcl_bcb_rate_selector DEFINITION
   PUBLIC SECTION.
     INTERFACES zif_bcb_rate_selector.
 
-    "! Prioridade dos boletins (menor = maior prioridade)
+    " Prioridade dos boletins (menor = maior prioridade)
     CONSTANTS:
       BEGIN OF gc_boletim_priority,
         fechamento    TYPE i VALUE 1,
@@ -18,6 +18,12 @@ CLASS zcl_bcb_rate_selector DEFINITION
         abertura      TYPE i VALUE 3,
         unknown       TYPE i VALUE 99,
       END OF gc_boletim_priority.
+
+    " Nomes dos boletins da API BCB (valores técnicos, não traduzíveis)
+    CONSTANTS:
+      gc_boletim_fechamento    TYPE string VALUE 'Fechamento' ##NO_TEXT,
+      gc_boletim_intermediario TYPE string VALUE 'Intermedi' ##NO_TEXT,
+      gc_boletim_abertura      TYPE string VALUE 'Abertura' ##NO_TEXT.
 
     "! Retorna a prioridade numérica de um tipo de boletim
     "!
@@ -64,11 +70,11 @@ CLASS zcl_bcb_rate_selector IMPLEMENTATION.
 
 
   METHOD get_boletim_priority.
-    IF i_tipo_boletim CS 'Fechamento'.
+    IF i_tipo_boletim CS gc_boletim_fechamento.
       r_result = gc_boletim_priority-fechamento.
-    ELSEIF i_tipo_boletim CS 'Intermedi'.
+    ELSEIF i_tipo_boletim CS gc_boletim_intermediario.
       r_result = gc_boletim_priority-intermediario.
-    ELSEIF i_tipo_boletim CS 'Abertura'.
+    ELSEIF i_tipo_boletim CS gc_boletim_abertura.
       r_result = gc_boletim_priority-abertura.
     ELSE.
       r_result = gc_boletim_priority-unknown.

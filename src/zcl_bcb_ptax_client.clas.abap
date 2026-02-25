@@ -78,15 +78,22 @@ CLASS zcl_bcb_ptax_client IMPLEMENTATION.
           CHANGING
             data        = r_result ).
 
-      CLEANUP.
+      CATCH cx_web_http_client_error INTO DATA(lx_http_error).
         IF lo_http_client IS BOUND.
-          lo_http_client->close( ).
+          TRY.
+              lo_http_client->close( ).
+            CATCH cx_web_http_client_error ##NO_HANDLER.
+          ENDTRY.
         ENDIF.
+        RAISE EXCEPTION lx_http_error.
     ENDTRY.
 
     " Fechar o client HTTP
     IF lo_http_client IS BOUND.
-      lo_http_client->close( ).
+      TRY.
+          lo_http_client->close( ).
+        CATCH cx_web_http_client_error ##NO_HANDLER.
+      ENDTRY.
     ENDIF.
   ENDMETHOD.
 
