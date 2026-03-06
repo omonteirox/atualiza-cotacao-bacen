@@ -348,6 +348,51 @@ CLASS ZCL_BCB_RATES_ORCHESTRATOR IMPLEMENTATION.
   METHOD if_apj_rt_exec_object~execute.
     " Executa a atualização via Application Job
     execute_rates_update( ).
+
+    " Salvar log e gerenciar status do job
+    TRY.
+        DATA(lo_log) = cl_bali_log=>create( ).
+        DATA(lv_has_error) = abap_false.
+
+        LOOP AT mt_messages INTO DATA(ls_msg).
+          DATA lv_severity TYPE if_bali_constants=>ty_severity.
+
+          CASE ls_msg-type.
+            WHEN 'E' OR 'A'.
+              lv_severity = if_bali_constants=>c_severity_error.
+              lv_has_error = abap_true.
+            WHEN 'W'.
+              lv_severity = if_bali_constants=>c_severity_warning.
+            WHEN 'S'.
+              lv_severity = if_bali_constants=>c_severity_status.
+            WHEN OTHERS.
+              lv_severity = if_bali_constants=>c_severity_information.
+          ENDCASE.
+
+          DATA(lv_text) = |{ ls_msg-message } { ls_msg-message_v1 } { ls_msg-message_v2 }|.
+          CONDENSE lv_text.
+
+          DATA(lo_free_text) = cl_bali_free_text_setter=>create(
+            severity = lv_severity
+            text     = CONV #( lv_text )
+          ).
+          lo_log->add_item( lo_free_text ).
+        ENDLOOP.
+
+        " Atrela o log estendido ap job
+        cl_bali_log_db=>get_instance( )->save_log( 
+          log                        = lo_log 
+          assign_to_current_appl_job = abap_true 
+        ).
+
+      CATCH cx_bali_runtime.
+        " Se falhar o log de infraestrutura, continua a avaliação
+    ENDTRY.
+
+    " Falhar a job explicitamente se houver erro reportado
+    IF lv_has_error = abap_true.
+      RAISE EXCEPTION TYPE cx_apj_rt_exec_object.
+    ENDIF.
   ENDMETHOD.
 
 
