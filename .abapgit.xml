@@ -5,7 +5,7 @@
    <MASTER_LANGUAGE>E</MASTER_LANGUAGE>
    <STARTING_FOLDER>/src/</STARTING_FOLDER>
    <FOLDER_LOGIC>FULL</FOLDER_LOGIC>
-   <IGNORE>
+    <IGNORE>
     <item>/.gitignore</item>
     <item>/LICENSE</item>
     <item>/README.md</item>
@@ -13,6 +13,13 @@
     <item>/.travis.yml</item>
     <item>/.gitlab-ci.yml</item>
     <item>/help-abap/**</item>
+    <item>/.agents/**</item>
+    <item>/.claude/**</item>
+    <item>/.cursor/**</item>
+    <item>/.github/**</item>
+    <item>/.gcts.properties.json</item>
+    <item>/.gctsmetadata/**</item>
+    <item>/CLAUDE.md</item>
    </IGNORE>
   </DATA>
  </asx:values>

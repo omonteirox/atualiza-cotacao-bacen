@@ -3,8 +3,7 @@
   "version": "1.0.0",
   "description": "omonteirox-atualiza-cotacao-bacen",
   "repositoryLayout": {
-    "format": "json",
-    "formatVersion": "6",
+    "format": "abapgit",
     "keepClient": "false",
     "metaInformation": ".gctsmetadata/",
     "tableContent": "true"

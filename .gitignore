@@ -3,3 +3,8 @@
 .cursor/
 .github/
 CLAUDE.md
+
+# Configurações SAP (abapGit e gCTS)
+.abapgit.xml
+.gcts.properties.json
+.gctsmetadata/
