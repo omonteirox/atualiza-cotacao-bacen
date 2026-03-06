@@ -105,6 +105,7 @@ ENDCLASS.
 
 CLASS ZCL_BCB_RATES_ORCHESTRATOR IMPLEMENTATION.
 
+
   METHOD constructor.
     " Injeção de dependência: usa instâncias fornecidas ou cria defaults
     mo_ptax_client    = COND #( WHEN i_ptax_client    IS BOUND THEN i_ptax_client
@@ -205,7 +206,7 @@ CLASS ZCL_BCB_RATES_ORCHESTRATOR IMPLEMENTATION.
 
 
   METHOD get_rate_with_fallback.
-    DATA: lv_current_date TYPE d.
+    DATA lv_current_date TYPE d.
 
     lv_current_date = i_date.
     e_effective_date = i_date.
@@ -213,9 +214,8 @@ CLASS ZCL_BCB_RATES_ORCHESTRATOR IMPLEMENTATION.
     " Tentar dia atual e até gc_max_days_back dias anteriores
     DO gc_max_days_back TIMES.
       TRY.
-          DATA(ls_response) = mo_ptax_client->fetch_rates_for_date(
-            i_currency = i_currency
-            i_date     = lv_current_date ).
+          DATA(ls_response) = mo_ptax_client->fetch_rates_for_date( i_currency = i_currency
+                                                                    i_date     = lv_current_date ).
 
           " Selecionar a melhor cotação
           DATA(ls_best) = mo_rate_selector->select_best_rate( ls_response-value ).
@@ -384,5 +384,4 @@ CLASS ZCL_BCB_RATES_ORCHESTRATOR IMPLEMENTATION.
       out->write( |{ lv_icon } [{ ls_msg-type }] { ls_msg-message } { ls_msg-message_v1 } { ls_msg-message_v2 } { ls_msg-message_v3 } { ls_msg-message_v4 }| ).
     ENDLOOP.
   ENDMETHOD.
-
 ENDCLASS.

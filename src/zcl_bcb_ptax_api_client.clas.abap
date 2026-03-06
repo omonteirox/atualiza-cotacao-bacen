@@ -17,11 +17,10 @@ CLASS zcl_bcb_ptax_api_client DEFINITION
 
   PROTECTED SECTION.
   PRIVATE SECTION.
-
     "! Formata a data para o padrão da API BCB (MM-DD-YYYY)
     "!
-    "! @parameter i_date     | Data no formato ABAP (YYYYMMDD)
-    "! @parameter r_result   | Data no formato BCB (MM-DD-YYYY)
+    "! @parameter i_date   | Data no formato ABAP (YYYYMMDD)
+    "! @parameter r_result | Data no formato BCB (MM-DD-YYYY)
     METHODS format_date_for_bcb
       IMPORTING i_date          TYPE d
       RETURNING VALUE(r_result) TYPE string.
@@ -30,7 +29,8 @@ ENDCLASS.
 
 
 
-CLASS zcl_bcb_ptax_api_client IMPLEMENTATION.
+CLASS ZCL_BCB_PTAX_API_CLIENT IMPLEMENTATION.
+
 
   METHOD zif_bcb_ptax_api_client~fetch_rates_for_date.
     DATA: lv_url_path TYPE string.
@@ -102,5 +102,4 @@ CLASS zcl_bcb_ptax_api_client IMPLEMENTATION.
     " Formato esperado pela API BCB: MM-DD-YYYY
     r_result = |{ i_date+4(2) }-{ i_date+6(2) }-{ i_date(4) }|.
   ENDMETHOD.
-
 ENDCLASS.

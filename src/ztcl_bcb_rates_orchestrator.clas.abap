@@ -12,6 +12,7 @@ CLASS ZTCL_BCB_RATES_ORCHESTRATOR DEFINITION
   FINAL
   CREATE PUBLIC.
 
+protected section.
   PRIVATE SECTION.
 
     " ============================================================
@@ -109,15 +110,12 @@ ENDCLASS.
 
 CLASS ZTCL_BCB_RATES_ORCHESTRATOR IMPLEMENTATION.
 
+
   METHOD setup.
     mo_rate_selector  = NEW zcl_bcb_rates_selector( ).
     mo_rate_validator = NEW zcl_bcb_rates_validator( ).
   ENDMETHOD.
 
-
-  " ========================================
-  " Testes de Formatação de Data
-  " ========================================
 
   METHOD test_format_date_standard.
     cl_abap_unit_assert=>assert_equals(
@@ -150,10 +148,6 @@ CLASS ZTCL_BCB_RATES_ORCHESTRATOR IMPLEMENTATION.
       msg = 'Formato de data para último dia do ano incorreto' ).
   ENDMETHOD.
 
-
-  " ========================================
-  " Testes de Seleção de Melhor Cotação
-  " ========================================
 
   METHOD test_select_fechamento_only.
     DATA(lt_cotacoes) = VALUE zif_bcb_ptax_api_client=>ty_bcb_cotacoes(
@@ -275,10 +269,6 @@ CLASS ZTCL_BCB_RATES_ORCHESTRATOR IMPLEMENTATION.
   ENDMETHOD.
 
 
-  " ========================================
-  " Testes de Prioridade de Boletim
-  " ========================================
-
   METHOD test_priority_fechamento.
     cl_abap_unit_assert=>assert_equals(
       act = mo_rate_selector->get_boletim_priority( 'Fechamento PTAX' )
@@ -310,10 +300,6 @@ CLASS ZTCL_BCB_RATES_ORCHESTRATOR IMPLEMENTATION.
       msg = 'Prioridade de tipo desconhecido deveria ser 99' ).
   ENDMETHOD.
 
-
-  " ========================================
-  " Testes de Validação de Cotação
-  " ========================================
 
   METHOD test_validate_rate_valid.
     DATA(ls_cotacao) = create_test_cotacao(
@@ -394,10 +380,6 @@ CLASS ZTCL_BCB_RATES_ORCHESTRATOR IMPLEMENTATION.
   ENDMETHOD.
 
 
-  " ========================================
-  " Testes de Lista de Moedas
-  " ========================================
-
   METHOD test_currency_list_content.
     DATA(lt_currencies) = ZCL_BCB_RATES_ORCHESTRATOR=>get_currency_list( ).
 
@@ -428,10 +410,6 @@ CLASS ZTCL_BCB_RATES_ORCHESTRATOR IMPLEMENTATION.
   ENDMETHOD.
 
 
-  " ========================================
-  " Helper Methods
-  " ========================================
-
   METHOD create_test_cotacao.
     r_result = VALUE zif_bcb_ptax_api_client=>ty_bcb_cotacao(
       paridadecompra  = 1
@@ -442,5 +420,4 @@ CLASS ZTCL_BCB_RATES_ORCHESTRATOR IMPLEMENTATION.
       tipoboletim     = i_tipo
     ).
   ENDMETHOD.
-
 ENDCLASS.

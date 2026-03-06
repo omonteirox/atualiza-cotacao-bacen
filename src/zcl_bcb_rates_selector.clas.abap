@@ -39,7 +39,8 @@ ENDCLASS.
 
 
 
-CLASS zcl_bcb_rates_selector IMPLEMENTATION.
+CLASS ZCL_BCB_RATES_SELECTOR IMPLEMENTATION.
+
 
   METHOD zif_bcb_rates_selector~select_best_rate.
     DATA: lv_best_priority TYPE i VALUE 99,
@@ -80,5 +81,4 @@ CLASS zcl_bcb_rates_selector IMPLEMENTATION.
       r_result = gc_boletim_priority-unknown.
     ENDIF.
   ENDMETHOD.
-
 ENDCLASS.

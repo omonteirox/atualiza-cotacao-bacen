@@ -31,7 +31,8 @@ ENDCLASS.
 
 
 
-CLASS zcl_bcb_rates_validator IMPLEMENTATION.
+CLASS ZCL_BCB_RATES_VALIDATOR IMPLEMENTATION.
+
 
   METHOD validate.
     " Cotação é válida se compra E venda são positivas
@@ -50,5 +51,4 @@ CLASS zcl_bcb_rates_validator IMPLEMENTATION.
       r_result = abap_false.
     ENDIF.
   ENDMETHOD.
-
 ENDCLASS.
