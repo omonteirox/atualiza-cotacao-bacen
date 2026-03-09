@@ -36,7 +36,7 @@ CLASS ZCL_BCB_PTAX_API_CLIENT IMPLEMENTATION.
     DATA: lv_url_path TYPE string.
 
     " Montar o PATH da API (relativo ao host do Communication Arrangement)
-    lv_url_path = |CotacaoMoedaDia(moeda=@moeda,dataCotacao=@dataCotacao)?| &&
+    lv_url_path = |/CotacaoMoedaDia(moeda=@moeda,dataCotacao=@dataCotacao)?| &&
                   |@moeda='{ i_currency }'&| &&
                   |@dataCotacao='{ format_date_for_bcb( i_date ) }'&| &&
                   |$format=json|.
