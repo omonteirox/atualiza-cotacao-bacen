@@ -1,41 +1,34 @@
 [
  {
-  "table":"SOTR_USE",
+  "table":"E070A",
   "nametab":
   [
    {
-    "NAME":"PGMID",
+    "NAME":"TRKORR",
     "KEY":"X",
     "TYPE":"C",
-    "LENGTH":4,
+    "LENGTH":20,
     "DECIMALS":-1
    },
    {
-    "NAME":"OBJECT",
-    "KEY":"X",
-    "TYPE":"C",
-    "LENGTH":4,
-    "DECIMALS":-1
-   },
-   {
-    "NAME":"OBJ_NAME",
-    "KEY":"X",
-    "TYPE":"C",
-    "LENGTH":120,
-    "DECIMALS":-1
-   },
-   {
-    "NAME":"CONCEPT",
-    "KEY":"X",
-    "TYPE":"C",
-    "LENGTH":32,
-    "DECIMALS":-1
-   },
-   {
-    "NAME":"LFD_NUM",
+    "NAME":"POS",
     "KEY":"X",
     "TYPE":"N",
-    "LENGTH":4,
+    "LENGTH":6,
+    "DECIMALS":-1
+   },
+   {
+    "NAME":"ATTRIBUTE",
+    "KEY":"",
+    "TYPE":"C",
+    "LENGTH":30,
+    "DECIMALS":-1
+   },
+   {
+    "NAME":"REFERENCE",
+    "KEY":"",
+    "TYPE":"C",
+    "LENGTH":32,
     "DECIMALS":-1
    }
   ],

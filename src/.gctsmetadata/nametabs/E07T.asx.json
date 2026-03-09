@@ -1,27 +1,27 @@
 [
  {
-  "table":"TRDIRT",
+  "table":"E07T",
   "nametab":
   [
    {
-    "NAME":"NAME",
+    "NAME":"TRKORR",
     "KEY":"X",
     "TYPE":"C",
-    "LENGTH":40,
+    "LENGTH":20,
     "DECIMALS":-1
    },
    {
-    "NAME":"SPRSL",
+    "NAME":"LANGU",
     "KEY":"X",
-    "TYPE":"L",
+    "TYPE":"C",
     "LENGTH":1,
     "DECIMALS":-1
    },
    {
-    "NAME":"TEXT",
+    "NAME":"AS4TEXT",
     "KEY":"",
     "TYPE":"C",
-    "LENGTH":70,
+    "LENGTH":60,
     "DECIMALS":-1
    }
   ],
@@ -30,7 +30,7 @@
    {
     "CLIENTDEPENDENCY":"NO",
     "DELIVERYCLASS":"W",
-    "TABART":"SSEXC",
+    "TABART":"APPL0",
     "TABFORM":"T",
     "REFNAME":"-"
    }

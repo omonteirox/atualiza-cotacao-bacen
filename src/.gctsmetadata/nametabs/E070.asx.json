@@ -1,83 +1,69 @@
 [
  {
-  "table":"ENHOBJ",
+  "table":"E070",
   "nametab":
   [
    {
-    "NAME":"ENHNAME",
+    "NAME":"TRKORR",
     "KEY":"X",
     "TYPE":"C",
-    "LENGTH":30,
+    "LENGTH":20,
     "DECIMALS":-1
    },
    {
-    "NAME":"VERSION",
-    "KEY":"X",
-    "TYPE":"C",
-    "LENGTH":1,
-    "DECIMALS":-1
-   },
-   {
-    "NAME":"OBJ_TYPE",
-    "KEY":"X",
-    "TYPE":"C",
-    "LENGTH":4,
-    "DECIMALS":-1
-   },
-   {
-    "NAME":"OBJ_NAME",
-    "KEY":"X",
-    "TYPE":"C",
-    "LENGTH":120,
-    "DECIMALS":-1
-   },
-   {
-    "NAME":"STATE",
+    "NAME":"TRFUNCTION",
     "KEY":"",
     "TYPE":"C",
     "LENGTH":1,
     "DECIMALS":-1
    },
    {
-    "NAME":"PGMID",
-    "KEY":"",
-    "TYPE":"C",
-    "LENGTH":4,
-    "DECIMALS":-1
-   },
-   {
-    "NAME":"ELEMUSAGE",
-    "KEY":"",
-    "TYPE":"C",
-    "LENGTH":4,
-    "DECIMALS":-1
-   },
-   {
-    "NAME":"UPGRADE",
+    "NAME":"TRSTATUS",
     "KEY":"",
     "TYPE":"C",
     "LENGTH":1,
     "DECIMALS":-1
    },
    {
-    "NAME":"MAIN_TYPE",
+    "NAME":"TARSYSTEM",
+    "KEY":"",
+    "TYPE":"C",
+    "LENGTH":10,
+    "DECIMALS":-1
+   },
+   {
+    "NAME":"KORRDEV",
     "KEY":"",
     "TYPE":"C",
     "LENGTH":4,
     "DECIMALS":-1
    },
    {
-    "NAME":"MAIN_NAME",
+    "NAME":"AS4USER",
     "KEY":"",
     "TYPE":"C",
-    "LENGTH":40,
+    "LENGTH":12,
     "DECIMALS":-1
    },
    {
-    "NAME":"ADDTRANS",
+    "NAME":"AS4DATE",
+    "KEY":"",
+    "TYPE":"D",
+    "LENGTH":8,
+    "DECIMALS":-1
+   },
+   {
+    "NAME":"AS4TIME",
+    "KEY":"",
+    "TYPE":"T",
+    "LENGTH":6,
+    "DECIMALS":-1
+   },
+   {
+    "NAME":"STRKORR",
     "KEY":"",
     "TYPE":"C",
-    "LENGTH":1,
+    "LENGTH":20,
     "DECIMALS":-1
    }
   ],
@@ -86,7 +72,7 @@
    {
     "CLIENTDEPENDENCY":"NO",
     "DELIVERYCLASS":"W",
-    "TABART":"SSEXC",
+    "TABART":"APPL0",
     "TABFORM":"T",
     "REFNAME":"-"
    }

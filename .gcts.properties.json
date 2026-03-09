@@ -13,6 +13,7 @@
     "formatVersion": "6",
     "keepClient": "false",
     "metaInformation": ".gctsmetadata/",
+    "subdirectory": "src/",
     "tableContent": "true"
   }
 }

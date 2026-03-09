@@ -1,27 +1,20 @@
 [
  {
-  "table":"DDTYPES",
+  "table":"ATO_E07",
   "nametab":
   [
    {
-    "NAME":"TYPENAME",
+    "NAME":"TRKORR",
     "KEY":"X",
     "TYPE":"C",
-    "LENGTH":30,
+    "LENGTH":20,
     "DECIMALS":-1
    },
    {
-    "NAME":"STATE",
+    "NAME":"MANIFEST",
     "KEY":"",
-    "TYPE":"C",
-    "LENGTH":1,
-    "DECIMALS":-1
-   },
-   {
-    "NAME":"TYPEKIND",
-    "KEY":"",
-    "TYPE":"C",
-    "LENGTH":4,
+    "TYPE":"R",
+    "LENGTH":8,
     "DECIMALS":-1
    }
   ],
@@ -30,7 +23,7 @@
    {
     "CLIENTDEPENDENCY":"NO",
     "DELIVERYCLASS":"W",
-    "TABART":"SSEXC",
+    "TABART":"APPL0",
     "TABFORM":"T",
     "REFNAME":"-"
    }
