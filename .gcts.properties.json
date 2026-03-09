@@ -2,6 +2,12 @@
   "name": "omonteirox-atualiza-cotacao-bacen",
   "version": "1.0.0",
   "description": "omonteirox-atualiza-cotacao-bacen",
+  "configurations": [
+    {
+      "key": "CLIENT_VCS_LOGLVL",
+      "value": "info"
+    }
+  ],
   "repositoryLayout": {
     "format": "json",
     "formatVersion": "6",
