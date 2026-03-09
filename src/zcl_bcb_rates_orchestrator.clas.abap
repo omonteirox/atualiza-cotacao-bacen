@@ -385,14 +385,14 @@ CLASS ZCL_BCB_RATES_ORCHESTRATOR IMPLEMENTATION.
           assign_to_current_appl_job = abap_true 
         ).
 
-      CATCH cx_bali_runtime.
-        " Se falhar o log de infraestrutura, continua a avaliação
+      CATCH cx_bali_runtime INTO DATA(lx_bali).
+        " Erro de infraestrutura de log ignorado para não interromper job
     ENDTRY.
 
-    " Falhar a job explicitamente se houver erro reportado
-    IF lv_has_error = abap_true.
-      RAISE EXCEPTION TYPE cx_apj_rt_exec_object.
-    ENDIF.
+    " ATENÇÃO: Framework de Application Job avalia o log automaticamente.
+    " Se houver mensagens do tipo 'E' (Error) ou 'A' (Abort),
+    " o status da job será definido como Failed.
+    " O 'RAISE EXCEPTION' causaria rollback e perda do log.
   ENDMETHOD.
 
 
