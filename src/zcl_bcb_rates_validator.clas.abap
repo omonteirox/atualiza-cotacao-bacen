@@ -36,7 +36,7 @@ CLASS ZCL_BCB_RATES_VALIDATOR IMPLEMENTATION.
 
   METHOD validate.
     " Cotação é válida se compra E venda são positivas
-    IF i_cotacao-cotacaocompra > 0 AND i_cotacao-cotacaovenda > 0.
+    IF i_cotacao-cotacao_compra > 0 AND i_cotacao-cotacao_venda > 0.
       r_result = abap_true.
     ELSE.
       r_result = abap_false.

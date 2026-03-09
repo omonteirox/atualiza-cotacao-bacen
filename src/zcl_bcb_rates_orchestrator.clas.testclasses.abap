@@ -148,7 +148,7 @@ CLASS ltc_bcb_rates_orchestrator IMPLEMENTATION.
     DATA(ls_result) = mo_rate_selector->zif_bcb_rates_selector~select_best_rate( lt_cotacoes ).
 
     cl_abap_unit_assert=>assert_equals(
-      act = ls_result-tipoboletim
+      act = ls_result-tipo_boletim
       exp = 'Fechamento PTAX'
       msg = 'Deveria selecionar Fechamento PTAX' ).
   ENDMETHOD.
@@ -175,12 +175,12 @@ CLASS ltc_bcb_rates_orchestrator IMPLEMENTATION.
     DATA(ls_result) = mo_rate_selector->zif_bcb_rates_selector~select_best_rate( lt_cotacoes ).
 
     cl_abap_unit_assert=>assert_equals(
-      act = ls_result-tipoboletim
+      act = ls_result-tipo_boletim
       exp = 'Fechamento PTAX'
       msg = 'Com todos os boletins, deveria selecionar Fechamento PTAX' ).
 
     cl_abap_unit_assert=>assert_equals(
-      act = ls_result-cotacaocompra
+      act = ls_result-cotacao_compra
       exp = CONV decfloat16( '5.16760' )
       msg = 'Cotação de compra do Fechamento incorreta' ).
   ENDMETHOD.
@@ -201,7 +201,7 @@ CLASS ltc_bcb_rates_orchestrator IMPLEMENTATION.
     DATA(ls_result) = mo_rate_selector->zif_bcb_rates_selector~select_best_rate( lt_cotacoes ).
 
     cl_abap_unit_assert=>assert_equals(
-      act = ls_result-cotacaocompra
+      act = ls_result-cotacao_compra
       exp = CONV decfloat16( '5.15210' )
       msg = 'Deveria selecionar o último Intermediário (mais recente)' ).
   ENDMETHOD.
@@ -216,7 +216,7 @@ CLASS ltc_bcb_rates_orchestrator IMPLEMENTATION.
     DATA(ls_result) = mo_rate_selector->zif_bcb_rates_selector~select_best_rate( lt_cotacoes ).
 
     cl_abap_unit_assert=>assert_equals(
-      act = ls_result-tipoboletim
+      act = ls_result-tipo_boletim
       exp = 'Abertura'
       msg = 'Deveria selecionar Abertura quando é o único boletim' ).
   ENDMETHOD.
@@ -247,7 +247,7 @@ CLASS ltc_bcb_rates_orchestrator IMPLEMENTATION.
     DATA(ls_result) = mo_rate_selector->zif_bcb_rates_selector~select_best_rate( lt_cotacoes ).
 
     cl_abap_unit_assert=>assert_equals(
-      act = ls_result-cotacaocompra
+      act = ls_result-cotacao_compra
       exp = CONV decfloat16( '5.14000' )
       msg = 'Deveria selecionar o último Intermediário (maior prioridade que Abertura)' ).
   ENDMETHOD.
@@ -382,12 +382,12 @@ CLASS ltc_bcb_rates_orchestrator IMPLEMENTATION.
 
   METHOD create_test_cotacao.
     r_result = VALUE zif_bcb_ptax_api_client=>ty_bcb_cotacao(
-      paridadecompra  = 1
-      paridadevenda   = 1
-      cotacaocompra   = i_compra
-      cotacaovenda    = i_venda
-      datahoracotacao = i_datahora
-      tipoboletim     = i_tipo
+      paridade_compra   = 1
+      paridade_venda    = 1
+      cotacao_compra    = i_compra
+      cotacao_venda     = i_venda
+      data_hora_cotacao = i_datahora
+      tipo_boletim      = i_tipo
     ).
   ENDMETHOD.
 ENDCLASS.

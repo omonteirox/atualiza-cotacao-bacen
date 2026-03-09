@@ -236,9 +236,9 @@ CLASS ZCL_BCB_RATES_ORCHESTRATOR IMPLEMENTATION.
             log_message( i_type       = 'I'
                          i_message    = 'Cotação selecionada'
                          i_message_v1 = i_currency
-                         i_message_v2 = ls_best-tipoboletim
-                         i_message_v3 = ls_best-datahoracotacao
-                         i_message_v4 = CONV #( ls_best-cotacaocompra ) ).
+                         i_message_v2 = ls_best-tipo_boletim
+                         i_message_v3 = ls_best-data_hora_cotacao
+                         i_message_v4 = CONV #( ls_best-cotacao_compra ) ).
             RETURN.
           ENDIF.
 
@@ -292,7 +292,7 @@ CLASS ZCL_BCB_RATES_ORCHESTRATOR IMPLEMENTATION.
     ls_exchange_rate-valid_from  = i_date.
     ls_exchange_rate-from_factor = gc_factor.
     ls_exchange_rate-to_factor   = gc_factor.
-    ls_exchange_rate-exch_rate   = i_cotacao-cotacaocompra.
+    ls_exchange_rate-exch_rate   = i_cotacao-cotacao_compra.
     APPEND ls_exchange_rate TO mt_exchange_rates.
 
     " ========================================
@@ -306,7 +306,7 @@ CLASS ZCL_BCB_RATES_ORCHESTRATOR IMPLEMENTATION.
     ls_exchange_rate-valid_from    = i_date.
     ls_exchange_rate-from_factor_v = gc_factor.
     ls_exchange_rate-to_factor_v   = gc_factor.
-    ls_exchange_rate-exch_rate_v   = i_cotacao-cotacaocompra.
+    ls_exchange_rate-exch_rate_v   = i_cotacao-cotacao_compra.
     APPEND ls_exchange_rate TO mt_exchange_rates.
 
     " Log de sucesso com detalhes do boletim utilizado
@@ -314,15 +314,15 @@ CLASS ZCL_BCB_RATES_ORCHESTRATOR IMPLEMENTATION.
                  i_message    = 'Taxa direta registrada'
                  i_message_v1 = i_currency
                  i_message_v2 = CONV #( gc_base_currency )
-                 i_message_v3 = CONV #( i_cotacao-cotacaocompra )
-                 i_message_v4 = i_cotacao-tipoboletim ).
+                 i_message_v3 = CONV #( i_cotacao-cotacao_compra )
+                 i_message_v4 = i_cotacao-tipo_boletim ).
 
     log_message( i_type       = 'S'
                  i_message    = 'Taxa indireta registrada'
                  i_message_v1 = CONV #( gc_base_currency )
                  i_message_v2 = i_currency
-                 i_message_v3 = CONV #( i_cotacao-cotacaocompra )
-                 i_message_v4 = i_cotacao-tipoboletim ).
+                 i_message_v3 = CONV #( i_cotacao-cotacao_compra )
+                 i_message_v4 = i_cotacao-tipo_boletim ).
   ENDMETHOD.
 
 
@@ -385,7 +385,7 @@ CLASS ZCL_BCB_RATES_ORCHESTRATOR IMPLEMENTATION.
           assign_to_current_appl_job = abap_true 
         ).
 
-      CATCH cx_bali_runtime INTO DATA(lx_bali).
+      CATCH cx_bali_runtime INTO DATA(lx_bali) ##NO_HANDLER.
         " Erro de infraestrutura de log ignorado para não interromper job
     ENDTRY.
 

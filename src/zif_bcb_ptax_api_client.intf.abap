@@ -7,12 +7,12 @@ INTERFACE zif_bcb_ptax_api_client
 
   " Estrutura para deserialização do JSON da API BCB
   TYPES: BEGIN OF ty_bcb_cotacao,
-           paridadecompra  TYPE p LENGTH 10 DECIMALS 5,
-           paridadevenda   TYPE p LENGTH 10 DECIMALS 5,
-           cotacaocompra   TYPE p LENGTH 10 DECIMALS 5,
-           cotacaovenda    TYPE p LENGTH 10 DECIMALS 5,
-           datahoracotacao TYPE string,
-           tipoboletim     TYPE string,
+           paridade_compra   TYPE p LENGTH 10 DECIMALS 5,
+           paridade_venda    TYPE p LENGTH 10 DECIMALS 5,
+           cotacao_compra    TYPE p LENGTH 10 DECIMALS 5,
+           cotacao_venda     TYPE p LENGTH 10 DECIMALS 5,
+           data_hora_cotacao TYPE string,
+           tipo_boletim      TYPE string,
          END OF ty_bcb_cotacao,
          ty_bcb_cotacoes TYPE STANDARD TABLE OF ty_bcb_cotacao WITH EMPTY KEY.
 

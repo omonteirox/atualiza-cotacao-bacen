@@ -53,7 +53,7 @@ CLASS ZCL_BCB_RATES_SELECTOR IMPLEMENTATION.
       lv_index = sy-tabix.
 
       " Determinar prioridade do boletim
-      lv_priority = get_boletim_priority( ls_cotacao-tipoboletim ).
+      lv_priority = get_boletim_priority( ls_cotacao-tipo_boletim ).
 
       " Selecionar o de maior prioridade (menor número)
       " Em caso de empate (ex: múltiplos intermediários), pegar o último (mais recente)
